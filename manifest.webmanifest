@@ -1,0 +1,17 @@
+{
+  "name": "Generator Laporan Wisma Mulia & City Plaza",
+  "short_name": "Laporan WM-CP",
+  "description": "Pembuat laporan harian Security Wisma Mulia & City Plaza",
+  "lang": "id",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f4f1",
+  "theme_color": "#0f4c5c",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

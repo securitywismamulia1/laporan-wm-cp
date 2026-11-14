@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Generator Laporan Wisma Mulia & City Plaza</title>
+<style>
+:root{--bg:#f3f4f1;--card:#fff;--ink:#1b2733;--mute:#66727d;--line:#d9ddd8;--acc:#0f4c5c;--acc2:#e0a100;--ok:#1f7a4d;--bad:#b3261e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10171d;--card:#18222b;--ink:#e8edf0;--mute:#93a1ab;--line:#2c3a45;--acc:#5bb8cc;--acc2:#f0b429;--ok:#4cc38a;--bad:#ff8a80}}
+:root[data-theme="dark"]{--bg:#10171d;--card:#18222b;--ink:#e8edf0;--mute:#93a1ab;--line:#2c3a45;--acc:#5bb8cc;--acc2:#f0b429;--ok:#4cc38a;--bad:#ff8a80}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+header{background:var(--acc);color:#fff;padding:18px 16px}
+header h1{margin:0;font-size:19px;letter-spacing:.2px}
+header p{margin:4px 0 0;font-size:13px;opacity:.85}
+main{max-width:760px;margin:0 auto;padding:12px 12px 40px}
+section{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc2);border-radius:6px;padding:12px;margin:12px 0}
+h2{margin:0 0 10px;font-size:16px}
+label{display:block;font-size:12.5px;color:var(--mute);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+textarea{min-height:64px;resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.item{border:1px dashed var(--line);border-radius:6px;padding:8px;margin:8px 0;position:relative}
+.item .x{position:absolute;top:4px;right:4px;background:none;border:0;color:var(--bad);font-size:20px;cursor:pointer;line-height:1;padding:4px 8px}
+.trow{display:grid;grid-template-columns:1fr 90px 30px;gap:6px;margin:5px 0;align-items:center}
+.trow .x{background:none;border:0;color:var(--bad);font-size:20px;cursor:pointer}
+.tot{margin-top:10px;font-weight:700;color:var(--ok)}
+.btn{border:0;border-radius:6px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;background:var(--acc);color:#fff}
+.btn.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.btn.wa{background:#1fa855}
+.btn.bad{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#out{white-space:pre-wrap;word-wrap:break-word;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;font:13px/1.5 ui-monospace,Consolas,monospace;max-height:420px;overflow:auto}
+.sticky{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none;font-size:14px}
+#toast.on{opacity:1}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f4c5c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Laporan WM-CP">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+<header><h1>Generator Laporan Wisma Mulia & City Plaza</h1><p>Isi kolom, laporan tersusun otomatis, lalu salin atau kirim ke WhatsApp.</p></header>
+<main>
+
+<section><h2>Informasi umum</h2>
+<div class="g2"><div><label>Tanggal</label><input type="date" id="tgl"></div><div><label>Shift</label><select id="salam"><option>Pagi</option><option selected>Siang</option><option>Sore</option><option>Malam</option></select></div></div>
+<div class="g2"><div><label>Jam mulai</label><input id="jm" value="06.00"></div><div><label>Jam selesai</label><input id="js" value="14.00"></div></div>
+<div class="g2"><div><label>Ditujukan kepada</label><input id="kpd" value="Pak Harun"></div><div><label>Jabatan</label><input id="pgl" value="Komandan"></div></div>
+</section>
+
+<section><h2>1. Data kehadiran</h2>
+<div class="g2" id="hadir"></div>
+<label>Tenant</label><input type="number" min="0" inputmode="numeric" id="h_tenant">
+<div class="tot" id="tot_hadir"></div>
+</section>
+
+<section><h2>2. Kendaraan masuk</h2><div class="g2" id="kend"></div></section>
+
+<section><h2>3. Lift operation (unit)</h2><div class="g3" id="lift"></div></section>
+
+<section><h2>4. Data tenant aktif</h2><div id="tenants"></div>
+<div class="bar"><button class="btn sec" onclick="addTenant()">+ Tambah tenant</button></div>
+<div class="tot" id="tot_tenant"></div></section>
+
+<section><h2>5. Kegiatan hari ini</h2>
+<label>Kelas Octagon Foxx hari ini</label><div id="oct"></div><div class="bar"><button class="btn sec" onclick="addOct()">+ Tambah kelas</button></div><div class="tot" id="tot_oct"></div>
+<h3 style="margin:16px 0 4px;font-size:16px;font-weight:700">Kegiatan hari ini</h3><p style="margin:0 0 4px;font-size:13px;color:var(--mute)">Ketik langsung di bawah, atau tempel dari WhatsApp lalu tekan "Pisahkan jadi kegiatan".</p><label>Tempel kegiatan dari WhatsApp</label><textarea id="wa" placeholder="Tempel teks kegiatan dari WhatsApp di sini (format: - Jam 06.03 WIB, uraian...), lalu tekan tombol di bawah"></textarea><div class="bar"><button class="btn" onclick="impor()">Pisahkan jadi kegiatan</button></div><div id="keg"></div>
+<div class="bar"><button class="btn sec" onclick="addKeg()">+ Tambah kegiatan</button></div>
+<label>Temuan security</label><textarea id="temuan" placeholder="Kosongkan bila nihil"></textarea>
+<h2 style="margin-top:16px">Saldo temporary card manless</h2><label>Tempel dari WhatsApp (contoh: P04 = 99.000)</label><textarea id="wasaldo" placeholder="P03 = 50.000&#10;P04 = 99.000&#10;P08 = 120.000"></textarea><div class="bar"><button class="btn" onclick="imporSaldo()">Pisahkan jadi tabel</button></div><div id="sld"></div><div class="bar"><button class="btn sec" onclick="addSld()">+ Tambah gate</button></div>
+</section>
+
+<section><h2>6. Data kontraktor</h2><label>Tempel dari WhatsApp</label><textarea id="wakon" placeholder="*1. PT. Jaya Kencana*&#10;Kegiatan : Bongkar pasang lift&#10;Lokasi : P11 & P8&#10;Pekerja : 5 orang&#10;Mandor : Haryono&#10;In : 08.00 WIB&#10;Out : Masih aktif"></textarea><div class="bar"><button class="btn" onclick="imporKontr()">Pisahkan jadi kontraktor</button></div><div id="kontr"></div>
+<div class="bar"><button class="btn sec" onclick="addKontr()">+ Tambah kontraktor</button></div></section>
+
+<section><h2>7. Loading in/out</h2><div id="load"></div>
+<div class="bar"><button class="btn sec" onclick="addLoad()">+ Tambah loading</button></div></section>
+
+<section><h2>8. Laporan CCTV</h2>
+<div class="g2"><div><label>Jumlah CCTV</label><input type="number" id="cctv" value="121"></div><div><label>Jumlah DVR</label><input type="number" id="dvr" value="7"></div></div>
+<label>Keterangan</label><input id="cctvk" value="Semua camera CCTV berfungsi dengan baik."></section>
+
+<section><h2>Checklist kendaraan parkir</h2>
+<label>Shift</label><input id="shift" value="pagi">
+<div class="g3" id="park"></div></section>
+
+<section><h2>Petugas patroli</h2><div id="pat"></div>
+<div class="bar"><button class="btn sec" onclick="addPat()">+ Tambah petugas</button></div>
+<label>Kondisi personel & situasi (penutup)</label>
+<textarea id="penutup">- Seluruh personel Security yang masuk, hari ini dalam kondisi sehat wal'afiat.
+- Situasi lancar, aman dan terkendali.</textarea></section>
+
+<section><h2>Hasil laporan</h2><div id="out"></div></section>
+</main>
+
+<div class="sticky">
+<button class="btn" onclick="salin()">Salin laporan</button>
+<button class="btn wa" onclick="kirim()">Kirim ke WhatsApp</button>
+<button class="btn bad" onclick="reset()">Kosongkan</button>
+</div>
+<div id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const HADIR=[["Karyawan","h_kar"],["Sec Opr","h_opr"],["Sec Non Opr","h_non"],["Tamu","h_tamu"],["Kontraktor","h_kon"]];
+const KEND=[["Mobil","k_mobil"],["Motor","k_motor"],["Sepeda SCKT","k_sckt"],["Sepeda WCL","k_wcl"]];
+const LIFT=[["High zone","l_hi"],["Middle zone","l_mid"],["Low zone","l_low"],["Ciplaz","l_cip"],["Annex","l_ann"],["Carpark","l_car"],["Lift service","l_srv"]];
+const PARK=[["SCKT Mobil","p_sm"],["SCKT Sepeda","p_ss"],["WCL Mobil","p_wm"],["WCL Motor","p_wt"],["WCL Sepeda","p_ws"]];
+const TEN=[["Komipo",10],["Wampu",10],["Siborpa",2],["Tanggamus",9],["Imeco",8],["Citra Quality",15],["SLB",112],["SKK Migas",854],["CCSI",305],["Hyundai",152],["TMS",165],["Huawei",85],["Nuskin",58],["All Bank",52],["Klinik Ais",12],["Family Mart",7],["RM Putri",7],["Tomoro",4],["Puput Resto",5],["Mokka Coffee",5],["Octagon",4],["Kopitiam",5]];
+const KEY="laporan-wm-cp-draft";
+
+function numFields(box,arr){$(box).innerHTML=arr.map(a=>`<div><label>${a[0]}</label><input type="number" min="0" inputmode="numeric" id="${a[1]}"></div>`).join("")}
+numFields("hadir",HADIR);numFields("kend",KEND);numFields("lift",LIFT);numFields("park",PARK);
+
+function rm(btn){btn.closest(".item,.trow").remove();hitung()}
+function addTenant(n="",v=""){const d=document.createElement("div");d.className="trow";d.innerHTML=`<input class="tn" placeholder="Nama tenant" value="${n}"><input class="tv" type="number" min="0" inputmode="numeric" placeholder="pax" value="${v}"><button class="x" aria-label="Hapus" onclick="rm(this)">×</button>`;$("tenants").appendChild(d)}
+TEN.forEach(a=>addTenant(a[0],a[1]));
+
+function addItem(box,fields){const d=document.createElement("div");d.className="item";
+d.innerHTML=`<button class="x" aria-label="Hapus" onclick="rm(this)">×</button>`+fields.map(f=>f.area?`<label>${f.l}</label><textarea data-k="${f.k}" placeholder="${f.p||""}"></textarea>`:`<label>${f.l}</label><input data-k="${f.k}" placeholder="${f.p||""}">`).join("");
+$(box).appendChild(d);return d}
+const addKeg=()=>addItem("keg",[{l:"Jam (contoh: 06.03 atau 08.25 - 09.50)",k:"jam"},{l:"Uraian kegiatan",k:"txt",area:1}]);
+const addKontr=()=>addItem("kontr",[{l:"Nama kontraktor",k:"nama"},{l:"Lokasi",k:"lok"},{l:"Kegiatan",k:"keg"},{l:"Jumlah pekerja",k:"pek"},{l:"Mandor",k:"mdr"},{l:"In",k:"in",p:"08.00"},{l:"Out",k:"out",p:"Masih aktif"}]);
+const addLoad=()=>addItem("load",[{l:"Jam",k:"jam"},{l:"Uraian loading in/out",k:"txt",area:1}]);
+const addPat=()=>addItem("pat",[{l:"Nama petugas",k:"nama"},{l:"Rute",k:"rute",p:"A / B"}]);
+const addSld=()=>addItem("sld",[{l:"Gate",k:"gate",p:"P04"},{l:"Saldo (Rp)",k:"saldo",p:"66.000"}]);
+const addOct=()=>addItem("oct",[{l:"Jam",k:"jam",p:"06.00 - 14.00"},{l:"Kelas",k:"kelas"},{l:"Pax",k:"pax",p:"26"},{l:"PIC",k:"pic"}]);
+[["P03","50.000"],["P04","99.000"],["P08","120.000"]].forEach(a=>{const d=addSld();d.querySelector('[data-k=gate]').value=a[0];d.querySelector('[data-k=saldo]').value=a[1]});addOct();addKeg();addKontr();addLoad();["A","B","A","B"].forEach(r=>{addPat().querySelector('[data-k=rute]').value=r});
+
+function impor(){const raw=$("wa").value.replace(/\r/g,"").trim();if(!raw){toast("Tempel teks dulu");return}
+const re=/^\s*[-•*~]*\s*Jam\s*[:.]?\s*([0-9OoIl][0-9OoIl.:]*(?:\s*(?:-|–|s\/d|sd)\s*[0-9OoIl][0-9OoIl.:]*)?)\s*WIB\s*,?\s*(.*)$/i;
+const fix=s=>s.replace(/[OoIl]/g,c=>/[Oo]/.test(c)?"0":"1").replace(/\s*–\s*/g," - ");
+let list=[],cur=null;
+raw.split("\n").forEach(l=>{const m=l.match(re);if(m){cur={jam:fix(m[1]).trim(),txt:m[2].trim()};list.push(cur)}else if(cur){if(l.trim())cur.txt+=(cur.txt?"\n":"")+l.trim()}else if(l.trim()){cur={jam:"",txt:l.trim()};list.push(cur)}});
+[...$("keg").children].forEach(r=>{if(![...r.querySelectorAll("[data-k]")].some(e=>e.value.trim()))r.remove()});
+list.forEach(o=>{const d=addKeg();d.querySelector('[data-k=jam]').value=o.jam;d.querySelector('[data-k=txt]').value=o.txt.trim()});
+$("wa").value="";toast(list.length+" kegiatan ditambahkan");render()}
+function imporSaldo(){const raw=$("wasaldo").value.replace(/\r/g,"").trim();if(!raw){toast("Tempel teks dulu");return}
+const re=/^\s*[-•*~]*\s*(P\s*\d+[A-Za-z]?)\s*[=:\-]?\s*(?:Rp\.?)?\s*([\d.,]+)/i;
+const fm=v=>String(v).replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const got=[];raw.split("\n").forEach(l=>{const m=l.match(re);if(m)got.push([m[1].replace(/\s/g,"").toUpperCase(),fm(m[2])])});
+if(!got.length){toast("Format tidak dikenali, contoh: P04 = 99.000");return}
+[...$("sld").children].forEach(r=>{if(![...r.querySelectorAll("[data-k]")].some(e=>e.value.trim()))r.remove()});
+got.forEach(a=>{const d=addSld();d.querySelector('[data-k=gate]').value=a[0];d.querySelector('[data-k=saldo]').value=a[1]});
+$("wasaldo").value="";toast(got.length+" gate ditambahkan");render()}
+function imporKontr(){const raw=$("wakon").value.replace(/\r/g,"").trim();if(!raw){toast("Tempel teks dulu");return}
+const nm=/^\s*\*?\s*\d+\s*[.)]\s*\*?\s*(.+?)\s*\*?\s*$/;
+const stop=/^\s*\*?\s*\d+\s*[.)]\s*\*?\s*(Data Kontraktor|Loading|Laporan CCTV)/i;
+const kv=/^\s*\*?\s*(Lokasi|Kegiatan|Pekerja|Mandor|In|Out)\s*\.?\s*:\s*(.*?)\s*$/i;
+const map={lokasi:"lok",kegiatan:"keg",pekerja:"pek",mandor:"mdr",in:"in",out:"out"};
+const list=[];let cur=null;
+raw.split("\n").forEach(l=>{if(stop.test(l)){cur=null;return}
+const k=l.match(kv);if(k){if(cur){let v=k[2];const key=map[k[1].toLowerCase()];if(key==="pek")v=v.replace(/\s*orang\s*$/i,"");if(key==="in")v=v.replace(/\s*WIB\s*$/i,"");cur[key]=v}return}
+const m=l.match(nm);if(m){cur={nama:m[1].replace(/\*/g,"").trim()};list.push(cur)}});
+if(!list.length){toast("Format tidak dikenali, contoh: 1. PT. Nama");return}
+[...$("kontr").children].forEach(r=>{if(![...r.querySelectorAll("[data-k]")].some(e=>e.value.trim()))r.remove()});
+list.forEach(o=>{const d=addKontr();Object.entries(o).forEach(([k,v])=>{d.querySelector(`[data-k=${k}]`).value=v})});
+$("wakon").value="";toast(list.length+" kontraktor ditambahkan");render()}
+function rows(box){return [...$(box).children].map(r=>{const o={};r.querySelectorAll("[data-k]").forEach(e=>o[e.dataset.k]=e.value.trim());return o})}
+const n=id=>parseInt($(id).value)||0;
+function totTenant(){return [...document.querySelectorAll("#tenants .tv")].reduce((s,e)=>s+(parseInt(e.value)||0),0)}
+function hitung(){const t=totTenant();
+const sub=HADIR.reduce((s,a)=>s+n(a[1]),0);const tot=sub+n("h_tenant");$("tot_hadir").innerHTML="Jumlah karyawan + sec opr + sec non opr + tamu + kontraktor = "+sub+" pax<br>Total kehadiran (ditambah tenant) = "+tot+" pax";$("tot_tenant").textContent="Total tenant = "+t+" pax";const po=rows("oct").reduce((s,r)=>s+(parseInt(r.pax)||0),0);$("tot_oct").textContent="Total peserta Octagon = "+po+" pax";return{t,tot}}
+
+function tgl(){const v=$("tgl").value;if(!v)return"";const[y,m,d]=v.split("-");return `${d} - ${m} - ${y}`}
+function build(){const{t,tot}=hitung();let o="";
+o+=`*Dear ${$("kpd").value.trim()},*\n\nSelamat ${$("salam").value} ${$("pgl").value.trim()}\n\nIjin melaporkan data, kegiatan dan situasi Wisma Mulia & City Plaza untuk :\nTanggal : ${tgl()}\nJam  : ${$("jm").value} - ${$("js").value} WIB\n\n`;
+o+=`1. *Data kehadiran :*\n`;
+const hd=[["Karyawan","h_kar"],["Sec Opr","h_opr"],["Sec Non Opr","h_non"]];
+hd.forEach(a=>o+=`  - ${a[0]} = ${n(a[1])} pax\n`);
+o+=`  - Tenant = ${n("h_tenant")} pax\n  - Tamu = ${n("h_tamu")} pax\n  - Kontraktor = ${n("h_kon")} pax\n  *Total* = ${tot} pax\n\n`;
+o+=`2. *Kendaraan masuk :*\n   - Mobil : ${n("k_mobil")} unit\n   - Motor : ${n("k_motor")} unit\n   - Sepeda Sckt : ${n("k_sckt")} unit\n   - Sepeda Wcl : ${n("k_wcl")} unit\n\n`;
+o+=`3. *Lift operation:*\n`;LIFT.forEach(a=>o+=`    - ${a[0]} = ${n(a[1])} unit\n`);o+="\n";
+o+=`4. *Data Tenant Aktif*\n`;[...document.querySelectorAll("#tenants .trow")].forEach(r=>{const a=r.querySelector(".tn").value.trim();if(a)o+=`- ${a} = ${parseInt(r.querySelector(".tv").value)||0} pax\n`});
+o+=`  *Total* = ${t} pax\n\n`;
+o+=`5. *Kegiatan hari ini :*\n\n`;
+const oc=rows("oct").filter(r=>r.kelas||r.jam);if(oc.length){const w=(k,h)=>Math.max(h.length,...oc.map(r=>(r[k]||"").length));const wj=w("jam","Jam"),wk=w("kelas","Kelas"),wp=w("pax","Pax");const L=(s,l)=>String(s).padEnd(l);o+="Informasi :\n\n*Kelas Octagon Foxx hari ini*\n```\n"+L("No",2)+" | "+L("Jam",wj)+" | "+L("Kelas",wk)+" | "+L("Pax",wp)+" | PIC\n"+oc.map((r,i)=>L(i+1,2)+" | "+L(r.jam||"-",wj)+" | "+L(r.kelas||"-",wk)+" | "+L(r.pax||"0",wp)+" | "+(r.pic||"-")).join("\n")+"\n```\nTotal : "+oc.reduce((s,r)=>s+(parseInt(r.pax)||0),0)+" Pax\n\n"}
+rows("keg").filter(r=>r.txt).forEach(r=>{o+=`- Jam ${r.jam||"-"} WIB,\n${r.txt}\n\n`});
+o+=`*Temuan Security*\n${$("temuan").value.trim()}\n\n`;
+const rp=v=>{const d=String(v).replace(/\D/g,"");return "Rp "+(d?d.replace(/\B(?=(\d{3})+(?!\d))/g,"."):"0")+",-"};const sl=rows("sld").filter(r=>r.gate);if(sl.length)o+="*Saldo Temporary Card Manless sbb :*\n"+sl.map(r=>r.gate+" = "+rp(r.saldo)).join("\n")+"\n\n";
+o+=`6. *Data Kontraktor :*\n\n`;
+rows("kontr").filter(r=>r.nama).forEach((r,i)=>{o+=`*${i+1}. ${r.nama}*\nLokasi : ${r.lok}\nKegiatan : ${r.keg}\nPekerja : ${r.pek} orang\nMandor : ${r.mdr}\nIn : ${r.in} WIB\nOut : ${r.out||"Masih aktif"}\n\n`});
+o+=`7. *Loading In/out*\n\n`;
+rows("load").filter(r=>r.txt).forEach(r=>{o+=`- Jam ${r.jam||"-"} WIB,\n${r.txt}\n\n`});
+o+=`8. *Laporan CCTV :*\n- Jumlah CCTV : ${n("cctv")} unit\n- Jumlah DVR : ${n("dvr")} unit\n# ${$("cctvk").value.trim()}\n\n`;
+o+=`*Data Ceklist Kendaraan Parkir Shift ${$("shift").value.trim()} :*\n\n *SCKT*\nMobil : ${n("p_sm")} unit\nSepeda : ${n("p_ss")} unit\n\n *WCL*\nMobil : ${n("p_wm")} unit\nMotor : ${n("p_wt")} unit\nSepeda : ${n("p_ws")} unit\n\n`;
+o+=`*Petugas Patroli*\n`;rows("pat").filter(r=>r.nama).forEach((r,i)=>{o+=`${i+1}. ${r.nama} (Rute ${r.rute})\n`});
+o+=`\n${$("penutup").value.trim()}\n\nDemikian sebagai laporan\nTerima kasih.`;
+return o}
+
+function render(){$("out").textContent=build();try{localStorage.setItem(KEY,JSON.stringify(snap()))}catch(e){}}
+function snap(){const s={f:{},t:[],r:{}};document.querySelectorAll("main > section [id]").forEach(e=>{if(/^(INPUT|SELECT|TEXTAREA)$/.test(e.tagName))s.f[e.id]=e.value});
+s.t=[...document.querySelectorAll("#tenants .trow")].map(r=>[r.querySelector(".tn").value,r.querySelector(".tv").value]);
+["oct","sld","keg","kontr","load","pat"].forEach(b=>s.r[b]=rows(b));return s}
+function restore(){try{const s=JSON.parse(localStorage.getItem(KEY));if(!s)return;
+Object.entries(s.f).forEach(([k,v])=>{if($(k))$(k).value=v});
+$("tenants").innerHTML="";s.t.forEach(a=>addTenant(a[0],a[1]));
+const fn={oct:addOct,sld:addSld,keg:addKeg,kontr:addKontr,load:addLoad,pat:addPat};
+Object.entries(s.r).forEach(([b,list])=>{$(b).innerHTML="";list.forEach(o=>{const d=fn[b]();Object.entries(o).forEach(([k,v])=>d.querySelector(`[data-k=${k}]`).value=v)})})}catch(e){}}
+
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
+function salin(){const txt=build();
+const fb=()=>{const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Laporan disalin")}catch(e){toast("Gagal menyalin, salin manual dari kotak hasil")}a.remove()};
+try{navigator.clipboard.writeText(txt).then(()=>toast("Laporan disalin"),fb)}catch(e){fb()}}
+function kirim(){window.open("https://wa.me/?text="+encodeURIComponent(build()),"_blank")}
+function reset(){if(!confirm("Kosongkan semua isian?"))return;try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
+
+restore();
+if(!$("tgl").value){const d=new Date();$("tgl").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+document.addEventListener("input",render);document.addEventListener("click",()=>setTimeout(render,0));
+render();
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+CARA PASANG PWA
+1. Upload semua isi folder ini ke hosting HTTPS (GitHub Pages, Netlify, Cloudflare Pages, atau server sendiri).
+2. Buka alamatnya di Chrome HP, lalu menu titik tiga > "Instal aplikasi" / "Tambahkan ke layar utama".
+3. Setelah terpasang, aplikasi bisa dibuka tanpa internet.
+Catatan: PWA tidak jalan bila file dibuka langsung dari penyimpanan HP (file://); wajib lewat HTTPS atau localhost.
+Update aplikasi: ubah index.html lalu naikkan versi CACHE di sw.js (laporan-wmcp-v2, dst).
